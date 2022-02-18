@@ -1,6 +1,6 @@
 /*
   Name: Raghav Marwah
-  Last Edit: 02/13/2022
+  Last Edit: 06/04/2016
   About Program: PONG-2D Table Tennis Simulator (Custom Edition)
 */
 
@@ -38,10 +38,6 @@
 
 	v2.0   	Milestone 2 (12/15/2015)
 
-	v2.1 	Commented out all code that accesses the local filesystem to read or save files
-            some functions have been disabled and main menu no longer lists those options. This is
-            a ready to play version that does not require signup and does not keep track of the high score.
-            (02/13/2022) 
 */
 
 #include<fstream.h>
@@ -120,8 +116,7 @@ void main()
 	initgraph(&driver,&mode,"//BGI");
 
 	gamebegin();	//Calls the loading screen fuction
-	//choice();	//Calls the function with login and signup options
-	newuser();
+	choice();	//Calls the function with login and signup options
 	mainmenu();	//Calls the main menu function
 }
 
@@ -129,9 +124,9 @@ void main()
 void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 {
 	cleardevice();
-	//int hscore;
+	int hscore;
 	myScore M;
-	/*fstream highscr;
+	fstream highscr;
 	highscr.open("hgscr.pg",ios::in|ios::binary);
 	highscr.read((char*)&M,sizeof(M));
 	if(mode==0){
@@ -142,7 +137,7 @@ void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 		long bgS=M.advScore;
 		hscore=decrypt(bgS);
 	}
-	highscr.close();*/
+	highscr.close();
 	randomize();
 	int yp1=250, yn1=310, move;
 	float yp2=250, yn2=310;
@@ -219,36 +214,34 @@ void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 			outtextxy(490,0,"Mode:");
 			if(mode==0)
 			{	outtextxy(540,0,"Beginner");
-				/*if(score>hscore)
+				if(score>hscore)
 				{       hscore=score;
 					M.begScore=crypt(score);
 					strcpy(M.begPlayer,myPlayer);
 					highscr.open("hgscr.pg",ios::out|ios::trunc|ios::binary);
 					highscr.write((char*)&M,sizeof(M));
 					highscr.close();
-				}*/
-            }
+				}}
 			else if(mode==1)
 			{	outtextxy(540,0,"Advanced");
-				/*if(score>hscore)
+				if(score>hscore)
 				{       hscore=score;
 					M.advScore=crypt(score);
 					strcpy(M.advPlayer,myPlayer);
 					highscr.open("hgscr.pg",ios::out|ios::trunc|ios::binary);
 					highscr.write((char*)&M,sizeof(M));
 					highscr.close();
-				}*/
-            }
+				}}
 			outtextxy(430,460,"Press Esc. To Return");
 			outtextxy(10,460,"Your Score:");
 			outtextxy(120,460,scr);
-			//itoa(hscore,hscr,10);
-			//outtextxy(10,0,"High Score:");
-			//outtextxy(120,0,hscr);
-			/*if(mode==0)
+			itoa(hscore,hscr,10);
+			outtextxy(10,0,"High Score:");
+			outtextxy(120,0,hscr);
+			if(mode==0)
 			outtextxy(160,0,M.begPlayer);
 			else if(mode==1)
-			outtextxy(160,0,M.advPlayer);*/
+			outtextxy(160,0,M.advPlayer);
 
 			int gmovr;
 			do{
@@ -259,28 +252,11 @@ void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 
 			mainmenu(); 	}  //Return to main menu
 
-		//Court redesign
-		setfillstyle(1,15);	
+		setfillstyle(1,15);	//Mid court redesign
 		setcolor(15);
 		bar(317,97,323,449);
 		circle(320,275,35);
 		circle(320,275,25);
-
-		bar(20,87,620,97);		//Top line of court
-		bar(20,450,620,460);	//Bottom line of court
-		bar(20,90,30,460);		///left line of court
-		bar(620,90,610,450);	//Right line of court
-		bar(317,97,323,449);	//Mid line of court
-		circle(320,275,35);
-		circle(320,275,25);
-
-		setfillstyle(6,15);
-		bar(45,98,55,449);		//Left separator
-		bar(585,98,595,449);	//Right separator
-
-		setcolor(WHITE);
-		settextstyle(2,0,6);
-		outtextxy(270,460,"HITS");
 
 		setfillstyle(1,batC);	//Player1
 		bar(570,yp1,580,yn1);
@@ -297,7 +273,7 @@ void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 		outtextxy(345,460,scr);
 
 		setfillstyle(1,2);	//Ball Design
-		bar(xb-20,yb-20,xb+20,yb+20);
+		bar(xb-8,yb-8,xb+8,yb+8);
 		setfillstyle(1,ballC);
 		setcolor(ballC);
 		circle(xb,yb,6);
@@ -319,7 +295,7 @@ void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 				bar(570,yp1,580,yn1);
 				yp1=110;
 				yn1=170;
-				setfillstyle(1,batC);
+				setfillstyle(1,1);
 				bar(570,yp1,580,yn1);
 			}
 			else
@@ -335,15 +311,15 @@ void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 			yn1=yn1+50;
 
 			if(yn1>=450)       //Limit Downward Movement
-			{   	
-				yp1=yp1-50;
+			{   	yp1=yp1-50;
 				yn1=yn1-50;
 				setfillstyle(1,2);
 				bar(570,yp1,580,yn1);
 				yp1=380;
 				yn1=440;
-				setfillstyle(1,batC);
+				setfillstyle(1,1);
 				bar(570,yp1,580,yn1);
+
 			}
 			else
 			{	setfillstyle(1,2);
@@ -360,18 +336,18 @@ void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 			debug=564;
 		}
 
-	if(yb>142 && yb<410){	//Limits machine to cross boundry	
-		yp2=yb-30;
+	if(yb>142 && yb<410)	//Limits AI to cross boundry
+	{	yp2=yb-30;
 		yn2=yb+30;
-	}
+		}
 
-	if(yp2<=100){
-		yp2=yp2+1;
+	if(yp2<=100)
+	{	yp2=yp2+1;
 		yn2=yn2+1;
 	}
-	else{
-		setfillstyle(1,2);
-		t3=yn2+15;
+	else
+	{	setfillstyle(1,2);
+		t3=yn2+10;
 		bar(60,yn2,70,t3);
 	}
 
@@ -381,7 +357,7 @@ void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 	}
 	else
 	{	setfillstyle(1,2);
-		t4=yp2-15;
+		t4=yp2-10;
 		bar(60,yp2,70,t4);
 	}
 
@@ -419,12 +395,12 @@ void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 
 	//What if player loses??
 	if(xb>=563)
-		if(yb<(yp1-15) || yb>(yn1+15))
+		if(yb<(yp1-9) || yb>(yn1+9))
 		{       sound(700);
 			delay(130);
 			nosound();
 			setfillstyle(1,2);
-			bar(xb-20,yb-20,xb+20,yb+20); //Reset Ball
+			bar(xb-8,yb-9,xb+8,yb+9); //Reset Ball
 			xb=100;
 			yb=280;
 			xgov=1;			//Reset movement
@@ -439,7 +415,7 @@ void maingame(float x1, float x2, float x3, int ballC, int batC, int mode)
 		}
 
 	}while(move!=27);
-	//highscr.close();
+	highscr.close();
 	cleardevice();
 	mainmenu();
 }
@@ -479,7 +455,7 @@ void gamebegin()
 	{
 		setfillstyle(2,7);
 		bar(160+i,420,190+i,430);
-		delay(5);
+		delay(15);
 	}
 
 	setcolor(WHITE);
@@ -505,13 +481,15 @@ void mainmenu()
 	outtextxy(115,135,"1. Start");
 	outtextxy(115,175,"2. Instructions");
 	outtextxy(115,215,"3. About Project");
-	outtextxy(115,255,"4. Settings");
-	outtextxy(115,295,"5. Exit");
+	outtextxy(115,255,"4. Profile");
+	outtextxy(115,295,"5. Settings");
+	outtextxy(115,335,"6. Reset");
+	outtextxy(115,375,"7. Exit");
 	//Displaying logged in username and game version..
 	settextstyle(2,0,6);
 	outtextxy(5,460,"Welcome:");
 	outtextxy(85,460,myPlayer);
-	outtextxy(520,460,"version: 2.1");
+	outtextxy(510,460,"version: 2.0.S");
 
 	do{
 	*choice='0';
@@ -558,13 +536,21 @@ void mainmenu()
 				break;
 
 		case '4':       delete choice;
-				settings();
+				profile_set();
 				break;
 
 		case '5':       delete choice;
+				settings();
+				break;
+
+		case '6':       delete choice;
+				reset();
+				break;
+
+		case '7':       delete choice;
 				exit(0);
 	}
-	}while(*choice<'1'||*choice>'5');
+	}while(*choice<'1'||*choice>'7');
 
 	cleardevice();
 }
@@ -645,9 +631,9 @@ void modeselect(int mballC,int mbatC)
 
 	transition(10);
 	if(select==0)	//Beginner Mode
-	maingame(10.0,11.0,12.0,mballC,mbatC,select);
+	maingame(1.0,1.1,1.2,mballC,mbatC,select);
 	else if(select==1)	//Advanced Mode
-	maingame(12.0,13.0,14.0,mballC,mbatC,select);
+	maingame(1.2,1.3,1.4,mballC,mbatC,select);
 }
 //||||||||||||||||||||| SETTINGS |||||||||||||||||||||||
 void settings()
@@ -843,9 +829,8 @@ void login()
 	floodfill(458,212,15);
 	us[0]=getch();
 	x[0]=us[0];
-		if(x[0]==27 || x[0]==8){	//Esc or backspace
-			goto reset_usrname_login;
-		}
+		if(x[0]==27)//Esc
+			choice();
 		else if(x[0]==13)//Enter
 		{	setcolor(LIGHTGRAY);
 			setfillstyle(1,LIGHTGRAY);
@@ -856,7 +841,8 @@ void login()
 			delay(500);
 			goto reset_usrname_login;
 		}
-			
+		else if(x[0]==8)//Backspace
+			goto reset_usrname_login;
 	x[1]='\0';
 	setcolor(LIGHTGRAY);
 	setfillstyle(1,LIGHTGRAY);
@@ -1026,14 +1012,14 @@ void newuser()
 	setcolor(LIGHTGRAY);
 	setfillstyle(1,LIGHTGRAY);
 	bar(224,105,416,133);
-	bar(300,220,450,243);	//Username Field
-	//bar(300,240,450,263);	//Password Field
+	bar(300,200,450,223);	//Username Field
+	bar(300,240,450,263);	//Password Field
 	setcolor(WHITE);
 	settextstyle(2,0,25);
 	outtextxy(228,95,"NEW USER");
 	settextstyle(2,0,7);
-	outtextxy(205,220,"Name: ");
-	//outtextxy(185,240,"Password: ");
+	outtextxy(185,200,"Username: ");
+	outtextxy(185,240,"Password: ");
 	//Functional Elements
 	profile player, player_check;
 	reset_usrname_newuser:
@@ -1042,19 +1028,17 @@ void newuser()
 	bar(236,325,409,340);
 	setcolor(WHITE);
 	settextstyle(2,0,6);
-	outtextxy(310,222,"10 characters");
-	//outtextxy(310,242,"10 characters");
+	outtextxy(310,202,"10 characters");
+	outtextxy(310,242,"10 characters");
 	char us2[11], ps2[11], x2[2];
 	setfillstyle(1,15);
 	setcolor(15);
-	circle(458,232,4);
-	floodfill(458,232,15);
-
+	circle(458,212,4);
+	floodfill(458,212,15);
 	us2[0]=getch();
 	x2[0]=us2[0];
-		if(x2[0]==27 || x2[0]==8){	//Esc or backspace
-			goto reset_usrname_newuser;
-		}
+		if(x2[0]==27)//Esc
+			choice();
 		else if(x2[0]==13)//Enter
 		{	setcolor(LIGHTGRAY);
 			setfillstyle(1,LIGHTGRAY);
@@ -1065,14 +1049,15 @@ void newuser()
 			delay(500);
 			goto reset_usrname_newuser;
 		}
-
+		else if(x2[0]==8)//Backspace
+			goto reset_usrname_newuser;
 	x2[1]='\0';
 	setcolor(LIGHTGRAY);
 	setfillstyle(1,LIGHTGRAY);
-	bar(300,220,450,244);
+	bar(300,200,450,224);
 	setcolor(WHITE);
 	settextstyle(2,0,6);
-	outtextxy(333,222,x2);
+	outtextxy(333,202,x2);
 	int i=1, j=8;
 	do{
 		check=0;
@@ -1082,7 +1067,7 @@ void newuser()
 			{
 				x2[0]=us2[i];
 				setcolor(WHITE);
-				outtextxy(333+j,222,x2);
+				outtextxy(333+j,202,x2);
 			}
 			else if(us2[i]==13)
 			{
@@ -1098,7 +1083,7 @@ void newuser()
 					check=1;
 					setcolor(LIGHTGRAY);
 					setfillstyle(1,LIGHTGRAY);
-					bar(333+j-8,220,450,244);
+					bar(333+j-8,200,450,224);
 					i--;
 					j-=8;
 				}
@@ -1120,7 +1105,7 @@ void newuser()
 		us2[i]='\0'; //replace '\n' with '\0' at position i
 		player.inUS(us2);
 
-	/*setfillstyle(1,15);
+	setfillstyle(1,15);
 	setcolor(15);
 	circle(458,252,4);
 	floodfill(458,252,15);
@@ -1180,17 +1165,17 @@ void newuser()
 		}
 
 		}while(x2[0]!=13);
-		ps2[i]='\0';*/
-
+		ps2[i]='\0';
 		player.inPS(ps2);
 		strcpy(myPlayer,us2);
-		/*fstream pl;
+		fstream pl;
 
 		//Opening file to check existing username..
 		pl.open("id.pg",ios::binary|ios::in);
 		pl.read((char*)&player_check,sizeof(player_check));
-		if(pl.fail()==0){	//Existing username would not be checked if file does not exist.
-		
+		if(pl.fail()==0){
+		/*Existing username would not be checked if
+		  file does not exist. */
 		while(!pl.eof())
 		{	if(strcmp(myPlayer,player_check.rUS())==0)
 			{	setcolor(LIGHTGRAY);
@@ -1210,7 +1195,7 @@ void newuser()
 		//Opening file to save the new profile..
 		pl.open("id.pg",ios::binary|ios::app);
 		pl.write((char*)&player,sizeof(player));
-		pl.close();*/
+		pl.close();
 
 		setcolor(LIGHTGRAY);
 		setfillstyle(1,LIGHTGRAY);
@@ -1223,9 +1208,8 @@ void newuser()
 
 }
 //|||||||||||||||||||||| CHOICE |||||||||||||||||||||||
-void choice() {
-
-	cleardevice();
+void choice()
+{       cleardevice();
 	setbkcolor(BLACK);
 	setcolor(LIGHTGRAY);
 	setfillstyle(1,LIGHTGRAY);
